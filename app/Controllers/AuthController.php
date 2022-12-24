@@ -14,9 +14,10 @@ class AuthController extends BaseController
     public function loginAction()
     {
         $validation = $this->validate([
-            'email' => 'required',
+            'email' => 'required|valid_email',
             'password' => 'required'
         ]);
+
         if (!$validation) {
             session()->setFlashdata('error', $this->validator->listErrors());
             return redirect()->back();

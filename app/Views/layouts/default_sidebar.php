@@ -32,6 +32,7 @@
                 </ul>
             </li>
 
+            <?php if (App\Helpers\RoleHelper::isAdmin()): ?>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-database"></i>
@@ -49,6 +50,7 @@
                     </li>
                 </ul>
             </li>
+            <?php endif ?>
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
