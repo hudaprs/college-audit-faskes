@@ -38,6 +38,10 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            <!-- Flash Message -->
+            <?= view_cell('\App\Libraries\Widget::flashMessage') ?>
+
+            <!-- Content -->
             <?= $this->renderSection('content') ?>
         </div>
         <!-- /.content-wrapper -->

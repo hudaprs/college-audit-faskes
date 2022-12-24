@@ -41,6 +41,8 @@ $routes->get('/', 'DashboardController::index');
 // ========== Route Section
 $routes->group('auth', function ($routes) {
     $routes->get('login', 'AuthController::login');
+    $routes->post('login-action', 'AuthController::loginAction');
+    $routes->get('logout', 'AuthController::logout');
 });
 // ========== End Route Section
 
@@ -56,6 +58,12 @@ $routes->group('master', function ($routes) {
     );
 });
 // ========== End Master
+
+// ========== Test
+$routes->group('tests', function ($routes) {
+    $routes->get('users', '\App\Controllers\Tests\UserController::index');
+});
+// ========== End Test
 
 /*
  * --------------------------------------------------------------------
