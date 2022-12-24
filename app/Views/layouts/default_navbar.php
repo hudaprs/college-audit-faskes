@@ -16,7 +16,7 @@
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
         <li class="nav-item pr-4">
-            <a href="<?= base_url('/auth/login') ?>">
+            <a href="<?= base_url('auth/logout') ?>">
                 Logout
             </a>
         </li>

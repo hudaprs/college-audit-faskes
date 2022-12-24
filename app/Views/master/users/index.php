@@ -10,27 +10,47 @@
                 <h1>User Management</h1>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
 <!-- Main content -->
 <section class="content">
-    <!-- Default box -->
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Title</h3>
+        <div class="card-header d-flex justify-content-between">
+            <h3 class="card-title">User List</h3>
+            <div class="d-flex">
+                <a href="<?= base_url('users/create') ?>" class="btn btn-primary">
+                    Create Users
+                </a>
+            </div>
         </div>
         <div class="card-body">
-            Start creating your amazing application!
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user): ?>
+                        <tr>
+                            <td><?= $user->name ?></td>
+                            <td><?= $user->email ?></td>
+                            <td><?= $user->role ?></td>
+                        </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <?= $pagination->links() ?>
+            </div>
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-            Footer
-        </div>
-        <!-- /.card-footer-->
     </div>
-    <!-- /.card -->
 </section>
-<!-- /.content -->
 
 <?= $this->endSection() ?>
