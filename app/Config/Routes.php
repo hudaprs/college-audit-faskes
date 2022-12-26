@@ -54,16 +54,16 @@ $routes->group('master', function ($routes) {
         'users',
         function ($routes) {
             $routes->get('/', 'UserController::index');
+            $routes->get('create', 'UserController::create');
+            $routes->post('store', 'UserController::store');
+            $routes->get('(:segment)', 'UserController::show/$1');
+            $routes->get('(:segment)/edit', 'UserController::edit/$1');
+            $routes->post('(:segment)/update', 'UserController::update/$1');
+            $routes->get('(:segment)/delete', 'UserController::delete/$1');
         }
     );
 });
 // ========== End Master
-
-// ========== Test
-$routes->group('tests', function ($routes) {
-    $routes->get('users', '\App\Controllers\Tests\UserController::index');
-});
-// ========== End Test
 
 /*
  * --------------------------------------------------------------------

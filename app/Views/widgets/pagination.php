@@ -4,12 +4,13 @@
     <ul class="pagination">
         <?php if ($pager->hasPrevious()): ?>
         <li class="page-item">
-            <a class="page-link" href="<?= $pager->getFirst() ?>" aria-label="First">
+            <a class="page-link" href="<?= base_url($pager->getFirst()) ?>" aria-label="First">
                 <span aria-hidden="true">First</span>
             </a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="<?= $pager->getPrevious() ?>" aria-label="<?= lang('Pager.previous') ?>">
+            <a class="page-link" href="<?= base_url($pager->getPrevious()) ?>"
+                aria-label="<?= lang('Pager.previous') ?>">
                 <span aria-hidden="true"><?= lang('Pager.previous') ?></span>
             </a>
         </li>
@@ -17,7 +18,7 @@
 
         <?php foreach ($pager->links() as $link): ?>
         <li <?= $link['active'] ? 'class="active page-item"' : 'class="page-item"' ?>>
-            <a href="<?= $link['uri'] ?>" class="page-link">
+            <a href="<?= base_url($link['uri']) ?>" class="page-link">
                 <?= $link['title'] ?>
             </a>
         </li>
@@ -25,12 +26,12 @@
 
         <?php if ($pager->hasNext()): ?>
         <li class="page-item">
-            <a class="page-link" href="<?= $pager->getNext() ?>" aria-label="<?= lang('Pager.next') ?>">
+            <a class="page-link" href="<?= base_url($pager->getNext()) ?>" aria-label="<?= lang('Pager.next') ?>">
                 <span aria-hidden="true"><?= lang('Pager.next') ?></span>
             </a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="<?= $pager->getLast() ?>" aria-label="<?= lang('Pager.last') ?>">
+            <a class="page-link" href="<?= base_url($pager->getLast()) ?>" aria-label="<?= lang('Pager.last') ?>">
                 <span aria-hidden="true"><?= lang('Pager.last') ?></span>
             </a>
         </li>

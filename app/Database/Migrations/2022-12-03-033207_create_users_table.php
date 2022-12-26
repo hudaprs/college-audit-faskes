@@ -2,6 +2,7 @@
 
 namespace App\Database\Migrations;
 
+use App\Helpers\RoleHelper;
 use CodeIgniter\Database\Migration;
 
 class Users extends Migration
@@ -28,8 +29,9 @@ class Users extends Migration
                 'constraint' => 255
             ],
             'role' => [
-                'type' => 'VARCHAR',
-                'constraint' => 25
+                'type' => 'ENUM',
+                'constraint' => RoleHelper::ROLE_LIST,
+                'default' => RoleHelper::DEFAULT
             ],
             'created_at DATETIME DEFAULT CURRENT_TIMESTAMP'
         ]);
