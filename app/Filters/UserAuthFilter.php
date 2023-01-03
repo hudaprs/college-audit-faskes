@@ -12,16 +12,16 @@ class UserAuthFilter implements FilterInterface
     {
         // Check if user not logged in, force back to login
         // Note: Don't redirect to auth again, because it will be infinite loop!
-        if (session()->get('id') === null && !str_contains(base_url(current_url()), 'auth/login')) {
-            return redirect()->to(base_url('auth/login'));
-        }
+        // if (session()->get('id') === null && !str_contains(base_url(current_url()), 'auth/login')) {
+        //     return redirect()->to(base_url('auth/login'));
+        // }
 
         // Check if user already authenticated, redirect to entry point of the url
         // If user want to go back to login page, force back to entry point
         // The statement above will prevent us from infinite loop
-        if (session()->get('id') && str_contains(base_url(current_url()), 'auth/login')) {
-            return redirect()->to(base_url());
-        }
+        // if (session()->get('id') && str_contains(base_url(current_url()), 'auth/login')) {
+        //     return redirect()->to(base_url());
+        // }
     }
 
     //--------------------------------------------------------------------
