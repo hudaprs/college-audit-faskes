@@ -43,14 +43,14 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" name="name" id="name" placeholder="Enter name"
-                        value="<?= old('name') ?? $user->name || null ?>" <?= $isDetail ? 'disabled' : '' ?>>
+                        value="<?= old('name') ? old('name') : (isset($user) ? $user->name : null) ?>" <?= $isDetail ? 'disabled' : '' ?>>
                 </div>
 
                 <!-- Email -->
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" name="email" id="email" placeholder="Enter email"
-                        value="<?= old('email') ?? $user->email || null ?>" <?= $isDetail ? 'disabled' : '' ?>>
+                        value="<?= old('email') ? old('email') : (isset($user) ? $user->email : null) ?>" <?= $isDetail ? 'disabled' : '' ?>>
                 </div>
 
                 <!-- Password -->
@@ -58,7 +58,7 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" name="password" id="password"
-                            placeholder="Enter password" value="<?= old('password') ?>" <?= $isDetail ? 'disabled' : '' ?>>
+                            placeholder="Enter password" <?= $isDetail ? 'disabled' : '' ?>>
                     </div>
                     <?php endif ?>
 
@@ -67,7 +67,7 @@
                     <label for="role">Role</label>
                     <select name="role" id="role" class="form-control" <?= $isDetail ? 'disabled' : '' ?>>
                         <?php foreach ($roleList as $role): ?>
-                            <option value="<?= $role ?>" <?=(old('role') ?? $user->role || null) === $role ? 'selected' : '' ?>>
+                            <option value="<?= $role ?>" <?=(old('role') ? old('role') : (isset($user) ? $user->role : null)) === $role ? 'selected' : '' ?>>
                                 <?= $role ?>
                             </option>
                             <?php endforeach ?>

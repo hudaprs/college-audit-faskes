@@ -70,7 +70,7 @@ class UserController extends BaseController
         $validation = $this->_validation();
         if (!$validation) {
             session()->setFlashdata('error', $this->validator->listErrors());
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
 
 
