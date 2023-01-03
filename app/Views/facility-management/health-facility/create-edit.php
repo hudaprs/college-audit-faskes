@@ -46,12 +46,14 @@
                         value="<?= old('name') ? old('name') : (isset($healthFacility) ? $healthFacility->name : null) ?>" <?= $isDetail ? 'disabled' : '' ?>>
                 </div>
 
+                <?php if($isDetail): ?>
                 <!-- Code -->
                 <div class="form-group">
                     <label for="code">Code</label>
                     <input type="text" class="form-control" name="code" id="code" placeholder="Enter code"
                         value="<?= old('code') ? old('code') : (isset($healthFacility) ? $healthFacility->code : null) ?>" <?= $isDetail ? 'disabled' : '' ?>>
                 </div>
+                <?php endif ?>
 
                 <!-- Type -->
                 <div class="form-group">

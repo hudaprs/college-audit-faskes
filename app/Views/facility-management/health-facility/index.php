@@ -38,9 +38,9 @@
                             <th>Code</th>
                             <th>Type</th>
                             <th>Address</th>
-                            <th>Created By</th>
+                            <th width="100px">Created By</th>
                             <th>Created At</th>
-                            <th class="text-center">Action</th>
+                            <th class="text-center" width="180px">Action</th>
                         </tr>
                     </thead>
                     <tbody>

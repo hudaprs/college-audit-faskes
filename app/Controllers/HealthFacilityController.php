@@ -23,7 +23,6 @@ class HealthFacilityController extends BaseController
         $validation = [
             'name' => 'required',
             'type' => 'required',
-            'code' => $isEdit ? 'required|is_unique[health_facilities.code,id,$id]' : 'required|is_unique[health_facilities.code]',
             'address' => 'required'
         ];
 
@@ -87,7 +86,7 @@ class HealthFacilityController extends BaseController
         $healthFacility->insert([
             'name' => $this->request->getVar('name'),
             'type' => $this->request->getVar('type'),
-            'code' => $this->request->getVar('code'),
+            'code' => 'HF'.date('ymd').rand(0, 9).substr(strtotime(date('Y-m-d H:i:s')), -4),
             'address' => $this->request->getVar('address'),
             'created_by' => session()->get('id'),
             'created_at' => date('Y-m-d H:i:s')
