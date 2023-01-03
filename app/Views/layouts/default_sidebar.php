@@ -5,7 +5,9 @@
             <img src="<?= base_url('dist/img/user2-160x160.jpg') ?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block"><?= session()->get('name') ?></a>
+            <a href="#" class="d-block">
+                <?= session()->get('name') ?>
+            </a>
         </div>
     </div>
 
@@ -33,11 +35,30 @@
             </li>
 
             <?php if (App\Helpers\RoleHelper::isAdmin()): ?>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-database"></i>
+                        <p>
+                            Master
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('master/users') ?>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>User Management</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <?php endif ?>
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-database"></i>
                     <p>
-                        Master
+                        Facility Management
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
@@ -45,12 +66,11 @@
                     <li class="nav-item">
                         <a href="<?= base_url('master/users') ?>" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>User Management</p>
+                            <p>Health Facility</p>
                         </a>
                     </li>
                 </ul>
             </li>
-            <?php endif ?>
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
