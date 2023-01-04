@@ -35,6 +35,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Created By</th>
                             <th>Created At</th>
                             <th class="text-center">Action</th>
                         </tr>
@@ -43,6 +44,7 @@
                         <?php foreach ($facilitie as $fac): ?>
                         <tr>
                             <td><?= $fac->name ?></td>
+                            <td><?= $fac->created_by ?></td>
                             <td><?= $fac->created_at ?></td>
                             <td class="text-center">
                                 <a href="<?= base_url("master/facilitie/$fac->id") ?>" class="btn btn-success">

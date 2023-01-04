@@ -33,7 +33,16 @@ class FacilitieController extends BaseController
     public function index()
     {
         $facilitie = new Facilitie();
-        $facilities = $facilitie->orderBy('created_at', 'desc')->where('id !=', session()->get('id'))->paginate(10);
+        $facilities = $facilitie->select([
+                'facilitie.id',
+                'facilitie.name',
+                'facilitie.created_by',
+                'facilitie.created_at'
+            ])
+            ->join('users', 'users.id = facilitie.created_by', 'LEFT')
+            ->orderBy('facilitie.created_at', 'desc')
+            ->paginate(10);
+
         $pagination = $facilitie->pager;
 
         return view('master/facilitie/index', [
@@ -63,6 +72,7 @@ class FacilitieController extends BaseController
 
         $facilitie->insert([
             'name' => $this->request->getVar('name'),
+            'created_by' => session()->get('id'),
         ]);
 
         // Check for error in transaction

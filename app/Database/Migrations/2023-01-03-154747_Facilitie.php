@@ -20,6 +20,11 @@ class Facilitie extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
+            'created_by' => [
+                'type' => 'INT',
+                'constraint' => 5,
+                'unsigned' => true
+            ],
             'created_at DATETIME DEFAULT CURRENT_TIMESTAMP',
             'updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
         ]);

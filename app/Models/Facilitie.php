@@ -10,7 +10,8 @@ class Facilitie extends Model
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $allowedFields = [
-        'name'
+        'name',
+        'created_by'
     ];
     protected $returnType = "object";
 }
