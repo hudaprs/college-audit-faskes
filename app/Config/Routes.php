@@ -38,6 +38,16 @@ $routes->set404Override();
 $routes->get('/', 'DashboardController::index');
 // ========== End Dashboard Section
 
+
+// ========== Tests Section
+$routes->group('tests', function ($routes) {
+    $routes->get('mapping-facility', 'TestController::mappingFacility');
+    $routes->get('mapping-health-facility-auditor', 'TestController::mappingHealthFacilityAuditor');
+    $routes->get('question', 'TestController::question');
+    $routes->get('mapping-question', 'TestController::mappingQuestion');
+});
+// ========== End Tests Section
+
 // ========== Route Section
 $routes->group('auth', function ($routes) {
     $routes->get('login', 'AuthController::login');
@@ -79,19 +89,25 @@ $routes->group('master', function ($routes) {
 // ========== End Master
 
 // ========== Facility Management
-$routes->group('facility-management', function($routes) {
+$routes->group('facility-management', function ($routes) {
     // Healt Facility
-    $routes->group('health-facility', function($routes) {
-        $routes->get('/', 'HealthFacilityController::index');
-        $routes->get('create', 'HealthFacilityController::create');
-        $routes->post('store', 'HealthFacilityController::store');
-        $routes->get('(:segment)', 'HealthFacilityController::show/$1');
-        $routes->get('(:segment)/edit', 'HealthFacilityController::edit/$1');
-        $routes->post('(:segment)/update', 'HealthFacilityController::update/$1');
-        $routes->get('(:segment)/delete', 'HealthFacilityController::delete/$1');
-    });
+    $routes->group(
+        'health-facility',
+        function ($routes) {
+            $routes->get('/', 'HealthFacilityController::index');
+            $routes->get('create', 'HealthFacilityController::create');
+            $routes->post('store', 'HealthFacilityController::store');
+            $routes->get('(:segment)', 'HealthFacilityController::show/$1');
+            $routes->get('(:segment)/edit', 'HealthFacilityController::edit/$1');
+            $routes->post('(:segment)/update', 'HealthFacilityController::update/$1');
+            $routes->get('(:segment)/delete', 'HealthFacilityController::delete/$1');
+        }
+    );
 });
 // ========== End Facility Management
+
+
+
 
 /*
  * --------------------------------------------------------------------
