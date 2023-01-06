@@ -78,6 +78,21 @@ $routes->group('master', function ($routes) {
 });
 // ========== End Master
 
+// ========== Facility Management
+$routes->group('facility-management', function($routes) {
+    // Healt Facility
+    $routes->group('health-facility', function($routes) {
+        $routes->get('/', 'HealthFacilityController::index');
+        $routes->get('create', 'HealthFacilityController::create');
+        $routes->post('store', 'HealthFacilityController::store');
+        $routes->get('(:segment)', 'HealthFacilityController::show/$1');
+        $routes->get('(:segment)/edit', 'HealthFacilityController::edit/$1');
+        $routes->post('(:segment)/update', 'HealthFacilityController::update/$1');
+        $routes->get('(:segment)/delete', 'HealthFacilityController::delete/$1');
+    });
+});
+// ========== End Facility Management
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

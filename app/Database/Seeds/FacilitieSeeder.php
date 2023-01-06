@@ -14,14 +14,14 @@ class FacilitieSeeder extends Seeder
                 'name' => 'Rawat Jalan',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 2,
                 'name' => 'Unit Gawat Darurat',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 3,
@@ -63,7 +63,7 @@ class FacilitieSeeder extends Seeder
                 'name' => 'Ambulance',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ]
         ];
 

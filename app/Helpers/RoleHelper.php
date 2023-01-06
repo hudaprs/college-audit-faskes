@@ -8,7 +8,7 @@ class RoleHelper
     const ADMIN = 'Admin';
     const AUDITOR = 'Auditor';
 
-    const ROLE_LIST = [self::DEFAULT , self::ADMIN, self::AUDITOR];
+    const ROLE_LIST = [self::DEFAULT, self::ADMIN, self::AUDITOR];
 
     public static function isAdmin()
     {
