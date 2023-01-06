@@ -14,21 +14,21 @@ class FacilitieSeeder extends Seeder
                 'name' => 'John Wall',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 2,
                 'name' => 'Christ Paul',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 3,
                 'name' => 'Antony Davis',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ]
         ];
 

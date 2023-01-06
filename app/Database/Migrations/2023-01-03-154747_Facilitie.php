@@ -30,11 +30,12 @@ class Facilitie extends Migration
         ]);
 
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('created_by', 'users', 'id');
         $this->forge->createTable('facilitie', true);
     }
 
     public function down()
     {
-        //
+        $this->forge->dropTable('facilitie');
     }
 }
