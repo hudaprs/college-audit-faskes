@@ -11,6 +11,9 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= base_url('plugins/fontawesome-free/css/all.min.css') ?>">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?= base_url('plugins/select2/css/select2.min.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') ?>">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url('dist/css/adminlte.min.css') ?>">
 </head>
@@ -25,10 +28,10 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
+            <a href="<?= base_url('') ?>" class="brand-link">
                 <img src="<?= base_url('dist/img/AdminLTELogo.png') ?>" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <span class="brand-text font-weight-light">E-Faskes Audit</span>
             </a>
 
             <!-- Sidebar -->
@@ -54,10 +57,15 @@
     <script src="<?= base_url('plugins/jquery/jquery.min.js') ?>"></script>
     <!-- Bootstrap 4 -->
     <script src="<?= base_url('plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+    <!-- Select2 -->
+    <script src="<?= base_url('plugins/select2/js/select2.full.min.js') ?>"></script>
     <!-- AdminLTE App -->
     <script src="<?= base_url('dist/js/adminlte.min.js') ?>"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url('dist/js/demo.js') ?>"></script>
+
+    <!-- Custom Javascript Section -->
+    <?= $this->renderSection('javascript') ?>
 </body>
 
 </html>
