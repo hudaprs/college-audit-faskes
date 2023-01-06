@@ -62,6 +62,19 @@ $routes->group('master', function ($routes) {
             $routes->get('(:segment)/delete', 'UserController::delete/$1');
         }
     );
+
+    $routes->group(
+        'facilitie',
+        function ($routes) {
+            $routes->get('/', 'FacilitieController::index');
+            $routes->get('create', 'FacilitieController::create');
+            $routes->post('store', 'FacilitieController::store');
+            $routes->get('(:segment)', 'FacilitieController::show/$1');
+            $routes->get('(:segment)/edit', 'FacilitieController::edit/$1');
+            $routes->post('(:segment)/update', 'FacilitieController::update/$1');
+            $routes->get('(:segment)/delete', 'FacilitieController::delete/$1');
+        }
+    );
 });
 // ========== End Master
 

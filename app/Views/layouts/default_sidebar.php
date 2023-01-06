@@ -50,9 +50,15 @@
                                 <p>User Management</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('master/facilitie') ?>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Facilitie</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-                <?php endif ?>
+            <?php endif ?>
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
