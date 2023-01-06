@@ -56,7 +56,7 @@
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-database"></i>
+                    <i class="nav-icon fa fa-building"></i>
                     <p>
                         Facility Management
                         <i class="right fas fa-angle-left"></i>
@@ -64,7 +64,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="<?= base_url('master/users') ?>" class="nav-link">
+                        <a href="<?= base_url('facility-management/health-facility') ?>" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Health Facility</p>
                         </a>
