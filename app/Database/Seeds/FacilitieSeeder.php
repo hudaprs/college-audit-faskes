@@ -28,35 +28,35 @@ class FacilitieSeeder extends Seeder
                 'name' => 'Rawat Inap',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 4,
                 'name' => 'ICU',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 5,
                 'name' => 'Kamar Operasi',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 6,
                 'name' => 'Medical Check Up',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 7,
                 'name' => 'Farmasi',
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
-                'updateded_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'id' => 8,
