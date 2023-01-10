@@ -36,7 +36,7 @@
 
             <form
                 action="<?= $isEdit ? base_url('facility-management/health-facility/'.$healthFacility->id.'/update') : base_url('facility-management/health-facility/store') ?>"
-                method="post">
+                method="POST">
                 <?= csrf_field() ?>
 
                 <!-- Name -->

@@ -90,7 +90,7 @@ $routes->group('master', function ($routes) {
 
 // ========== Facility Management
 $routes->group('facility-management', function ($routes) {
-    // Healt Facility
+    // Health Facility
     $routes->group(
         'health-facility',
         function ($routes) {
@@ -106,8 +106,18 @@ $routes->group('facility-management', function ($routes) {
 });
 // ========== End Facility Management
 
-
-
+// ========== Question Management
+$routes->group('question-management', function ($routes) {
+    // Mapping Question
+    $routes->group(
+        'mapping-question',
+        function ($routes) {
+            $routes->get('/', 'MappingQuestionController::index');
+            $routes->get('(:segment)/edit', 'MappingQuestionController::edit/$1');
+            $routes->post('(:segment)/update', 'MappingQuestionController::update/$1');
+        });
+});
+// ========== End Question Management
 
 /*
  * --------------------------------------------------------------------

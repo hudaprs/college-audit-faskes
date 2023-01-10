@@ -25,7 +25,7 @@
             </div>
             <div class="d-flex justify-content-end align-items-center w-100">
                 <a href="<?= base_url('facility-management/health-facility/create') ?>" class="btn btn-primary">
-                    Create Healt Facility
+                    Create Health Facility
                 </a>
             </div>
         </div>
