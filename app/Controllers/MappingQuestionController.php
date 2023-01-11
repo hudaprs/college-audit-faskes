@@ -61,18 +61,19 @@ class MappingQuestionController extends BaseController
         $auditCriteriaId = $this->request->getVar('audit_criteria_id');
         $questions = $this->request->getVar('questions[]');
         $auditQuestionItemsId = $this->request->getVar('audit_question_item_id[]');
-        $totaRow = count($questions);
         
         $addQuestions = [];
         $editQuestions = [];
         foreach($questions as $idx => $question) {
             if (empty($auditQuestionItemsId[$idx]) || !isset($auditQuestionItemsId[$idx])) {
-                $addQuestions[] = [
-                    'question' => $question,
-                    'audit_criteria_id' => $auditCriteriaId,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s')
-                ];
+                if (!empty($question)) {
+                    $addQuestions[] = [
+                        'question' => $question,
+                        'audit_criteria_id' => $auditCriteriaId,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
             } else {
                 $editQuestions[] = [
                     'id' => $auditQuestionItemsId[$idx],
