@@ -72,6 +72,23 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fa fa-building"></i>
+                    <p>
+                        Question Management
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="<?= base_url('question-management/audit-criterias') ?>" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Audit Criteria</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
         </ul>
 

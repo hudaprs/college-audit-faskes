@@ -85,6 +85,8 @@ $routes->group('master', function ($routes) {
             $routes->get('(:segment)/delete', 'FacilitieController::delete/$1');
         }
     );
+
+    
 });
 // ========== End Master
 
@@ -116,7 +118,23 @@ $routes->group('facility-management', function ($routes) {
 });
 // ========== End Facility Management
 
-
+// ========== Audit Question Management
+$routes->group('question-management', function ($routes) {
+    // Audit Criterias
+    $routes->group(
+        'audit-criterias',
+        function ($routes) {
+            $routes->get('/', 'AuditCriteriasController::index');
+            $routes->get('create', 'AuditCriteriasController::create');
+            $routes->post('store', 'AuditCriteriasController::store');
+            $routes->get('(:segment)', 'AuditCriteriasController::show/$1');
+            $routes->get('(:segment)/edit', 'AuditCriteriasController::edit/$1');
+            $routes->post('(:segment)/update', 'AuditCriteriasController::update/$1');
+            $routes->get('(:segment)/delete', 'AuditCriteriasController::delete/$1');
+        }
+    );
+});
+// ========== End Question Management
 
 
 /*
