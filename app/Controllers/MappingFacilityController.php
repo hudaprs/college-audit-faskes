@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\MappingFacility;
+use App\Models\HealthFacility;
 use App\Models\Facilitie;
 
 class MappingFacilityController extends BaseController
@@ -12,8 +13,8 @@ class MappingFacilityController extends BaseController
     {
         return [
             'isEdit' => $params['isEdit'] ?? false,
-            'isDetail' => $params['isDetail'] ?? false,
             'mappingFacility' => $params['mappingFacility'] ?? null,
+            'healthFacility' => $params['healthFacility'] ?? null,
             'facilities' => $params['facilities'] ?? null
         ];
     }
@@ -21,9 +22,8 @@ class MappingFacilityController extends BaseController
     private function _validation($isEdit=false, $id=null)
     {
         $validation = [
-            'name' => 'required',
-            'type' => 'required',
-            'address' => 'required'
+            'facility_id' => 'required',
+            'health_facility_id' => 'required'
         ];
 
         return $this->validate($validation);
@@ -31,25 +31,26 @@ class MappingFacilityController extends BaseController
 
     private function _getMappingFacility($id)
     {
-        $mappingFacilities = new MappingFacility();
-        $mappingFacility = $mappingFacilities->select([
-                'health_facility_facilities.id',
-                'health_facilities.name AS health_facility_id',
-                'facilitie.name AS facility_id',
-                'health_facility_facilities.created_at'
-            ])
-            ->join('health_facilities', 'health_facilities.id = health_facility_facilities.health_facility_id', 'LEFT')
-            ->join('facilitie', 'facilitie.id = health_facility_facilities.facility_id', 'LEFT')
-            ->where('health_facility_facilities.id', $id)->first();
-
-        return $mappingFacility;
+        $mappingFacility = new MappingFacility();
+        $vA = $mappingFacility->where('health_facility_id', $id)->findAll();
+        $facilityList = [];
+        foreach ($vA as $b) {
+            $facilityList[] = $b->facility_id; 
+        }
+        return $facilityList;
     }
 
-    private function _getFacility()
+    private function _getHealthFacility($id)
+    {
+        $healthFacility = new HealthFacility();
+        return $healthFacility->where('id', $id)->first();
+    }
+
+
+    private function _getFacility($id)
     {
         $facilitie = new Facilitie();
         $facilities = $facilitie->findAll();
-
         return $facilities;
     }
 
@@ -58,8 +59,10 @@ class MappingFacilityController extends BaseController
         $mappingFacility = new MappingFacility();
         $mappingFacilities = $mappingFacility->select([
                 'health_facility_facilities.id',
-                'health_facilities.name AS health_facility_id',
-                'facilitie.name AS facility_id',
+                'health_facility_facilities.health_facility_id',
+                'health_facility_facilities.facility_id',
+                'health_facilities.name',
+                'facilitie.name AS facility_name',
                 'health_facility_facilities.created_at'
             ])
             ->join('health_facilities', 'health_facilities.id = health_facility_facilities.health_facility_id', 'LEFT')
@@ -75,23 +78,16 @@ class MappingFacilityController extends BaseController
         ]);
     }
 
-    public function show($id)
-    {
-        $mappingFacility = $this->_getMappingFacility($id);
-        return view('facility-management/mapping-facility/create_edit', $this->_params([
-            'isDetail' => true,
-            'mappingFacility' => $mappingFacility
-        ]));
-    }
-
     public function edit($id)
     {
         $mappingFacility = $this->_getMappingFacility($id);
-        $facilities = $this->_getFacility();
-        
+        $healthFacility = $this->_getHealthFacility($id);
+        $facilities = $this->_getFacility($id);
+
         return view('facility-management/mapping-facility/create_edit', $this->_params([
             'isEdit' => true,
             'mappingFacility' => $mappingFacility,
+            'healthFacility' => $healthFacility,
             'facilities' => $facilities
         ]));
     }
@@ -107,12 +103,50 @@ class MappingFacilityController extends BaseController
             return redirect()->back()->withInput();
         }
 
-        $mappingFacility = new MappingFacility;
-        $mappingFacility->update($id, [
-            'facility_id' => $this->request->getVar('facilities'),
-        ]);
+        $id = $this->request->getVar('health_facility_id');
+        $facilities = $this->request->getVar('facility_id[]');
+        $mappingFacilityId = $this->request->getVar('mapping_facility_id[]');
 
-        
+        $addMappingFacilities = [];
+        $editMappingFacilities = [];
+        foreach($facilities as $idx => $facility) {
+            if (empty($mappingFacilityId[$idx]) || !isset($mappingFacilityId[$idx])) {
+                if (!empty($facility)) {
+                    $addMappingFacilities[] = [
+                        'health_facility_id' => $id,
+                        'facility_id' => $facility,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+            } else {
+                $editMappingFacilities[] = [
+                    'id' => $mappingFacilityId[$idx],
+                    'facility_id' => $facility,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+            }
+        }
+
+        $mappingFacility = new MappingFacility;
+
+        $mappingFacility->where('health_facility_id', $id)
+            ->delete();
+
+        $mappingFacilitiesExistsId = [];
+        if (!empty($editMappingFacilities)) {
+            foreach($editMappingFacilities as $editMappingFacility) {
+                $mappingFacilitiesExistsId[] = $editMappingFacility['id'];
+                $mappingFacility->update($editMappingFacility['id'], [
+                    'facility_id' => $editMappingFacility['facility_id'],
+                    'updated_at' => $editMappingFacility['updated_at']
+                ]);
+            }
+        }
+
+        if (!empty($addMappingFacilities)) {
+            $mappingFacility->insertBatch($addMappingFacilities);
+        }        
 
         // Check for error in transaction
         if (!$db->transStatus()) {

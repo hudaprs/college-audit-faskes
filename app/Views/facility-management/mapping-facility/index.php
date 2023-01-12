@@ -39,11 +39,11 @@
                         <?php if(sizeof($mappingFacilities)): ?>
                             <?php foreach($mappingFacilities as $mappingFacility): ?>
                             <tr>
-                                <td><?= $mappingFacility->health_facility_id ?></td>
-                                <td><?= $mappingFacility->facility_id ?></td>
+                                <td><?= $mappingFacility->name ?></td>
+                                <td><?= $mappingFacility->facility_name ?></td>
                                 <td><?= $mappingFacility->created_at ?></td>
                                 <td class="text-center">
-                                    <a href="<?= base_url("facility-management/mapping-facility/$mappingFacility->id/edit") ?>" class="btn btn-secondary">
+                                    <a href="<?= base_url("facility-management/mapping-facility/$mappingFacility->health_facility_id/edit") ?>" class="btn btn-secondary">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
