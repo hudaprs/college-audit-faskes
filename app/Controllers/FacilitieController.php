@@ -36,7 +36,7 @@ class FacilitieController extends BaseController
         $facilities = $facilitie->select([
                 'facilitie.id',
                 'facilitie.name',
-                'facilitie.created_by',
+                'users.name AS created_by',
                 'facilitie.created_at'
             ])
             ->join('users', 'users.id = facilitie.created_by', 'LEFT')

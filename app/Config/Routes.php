@@ -90,7 +90,7 @@ $routes->group('master', function ($routes) {
 
 // ========== Facility Management
 $routes->group('facility-management', function ($routes) {
-    // Healt Facility
+    // Health Facility
     $routes->group(
         'health-facility',
         function ($routes) {
@@ -101,6 +101,16 @@ $routes->group('facility-management', function ($routes) {
             $routes->get('(:segment)/edit', 'HealthFacilityController::edit/$1');
             $routes->post('(:segment)/update', 'HealthFacilityController::update/$1');
             $routes->get('(:segment)/delete', 'HealthFacilityController::delete/$1');
+        }
+    );
+
+    // Mapping Auditor
+    $routes->group(
+        'mapping-auditor',
+        function ($routes) {
+            $routes->get('/', 'MappingAuditorController::index');
+            $routes->get('(:segment)/edit', 'MappingAuditorController::edit/$1');
+            $routes->post('(:segment)/update', 'MappingAuditorController::update/$1');
         }
     );
 });
