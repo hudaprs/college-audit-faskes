@@ -42,7 +42,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                         <?php if(sizeof($audit_criteria)): ?>
+                        <?php if(count($audit_criteria) > 0): ?>
                             <?php foreach($audit_criteria as $auditCriteria): ?>
                             <tr>
                                 <td><?= $auditCriteria->criteria ?></td>

@@ -32,10 +32,17 @@ class UserSeeder extends Seeder
             'role' => RoleHelper::DEFAULT ,
             'password' => password_hash('password', PASSWORD_BCRYPT)
         ]);
+        $auditorUserFaker = new Fabricator(User::class);
+        $auditorUserFaker->setOverrides([
+            'role' => RoleHelper::AUDITOR,
+            'password' => password_hash('password', PASSWORD_BCRYPT)
+        ]);
         $fakeUsers = $userFaker->make(20);
+        $auditors = $auditorUserFaker->make(10);
 
         // Insert To Database
         $this->db->table('users')->insertBatch($users);
         $this->db->table('users')->insertBatch($fakeUsers);
+        $this->db->table('users')->insertBatch($auditors);
     }
 }

@@ -86,7 +86,7 @@ $routes->group('master', function ($routes) {
         }
     );
 
-    
+
 });
 // ========== End Master
 
@@ -127,7 +127,8 @@ $routes->group('question-management', function ($routes) {
             $routes->get('/', 'MappingQuestionController::index');
             $routes->get('(:segment)/edit', 'MappingQuestionController::edit/$1');
             $routes->post('(:segment)/update', 'MappingQuestionController::update/$1');
-        });
+        }
+    );
 });
 // ========== End Question Management
 
@@ -148,6 +149,20 @@ $routes->group('question-management', function ($routes) {
     );
 });
 // ========== End Question Management
+
+// ========== Audit 
+// Audit Criterias
+$routes->group(
+    'audits',
+    function ($routes) {
+        $routes->get('/', 'AuditController::index');
+        $routes->get('create', 'AuditController::create');
+        $routes->post('store', 'AuditController::store');
+        $routes->get('(:segment)/edit', 'AuditController::edit/$1');
+        $routes->post('(:segment)/update', 'AuditCriteriasController::update/$1');
+    }
+);
+// ========== End Audit
 
 
 /*
