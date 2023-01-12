@@ -28,7 +28,7 @@ class AuditQuestionItems extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        // $this->forge->addForeignKey('audit_criteria_id', 'audit_criterias', 'id');
+        $this->forge->addForeignKey('audit_criteria_id', 'audit_criterias', 'id');
         $this->forge->createTable('audit_question_items', true);
     }
 

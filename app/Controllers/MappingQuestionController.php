@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\AuditQuestionItem;
+use App\Models\AuditCriterias;
 
 class MappingQuestionController extends BaseController
 {
@@ -27,6 +28,12 @@ class MappingQuestionController extends BaseController
         return $this->validate($validation);
     }
 
+    private function _getAuditCriteria($auditCriteriaId)
+    {
+        $auditCriteria = new AuditCriterias();
+        return $auditCriteria->where('id', $auditCriteriaId)->first();
+    }
+
     private function _getAuditQuestionItems($auditCriteriaId)
     {
         $auditQuestionItems = new AuditQuestionItem();
@@ -35,14 +42,32 @@ class MappingQuestionController extends BaseController
 
     public function index()
     {
-        return view('question-management/mapping-question/index');
+        $auditCriteria = new AuditCriterias();
+        $fetchAuditCriteria = $auditCriteria->orderBy('created_at', 'DESC')->findAll();
+        
+        $auditCriterias = [];
+        foreach($fetchAuditCriteria as $ac) {
+            $fetchQuestionItem = $this->_getAuditQuestionItems($ac->id);
+
+            $auditCriterias[] = (object) [
+                'id' => $ac->id,
+                'criteria' => $ac->criteria,
+                'question_list' => $fetchQuestionItem
+            ];
+        }
+
+        return view('question-management/mapping-question/index', [
+            'auditCriterias' => $auditCriterias
+        ]);
     }
 
     public function edit($auditCriteriaId)
     {
+        $auditCriteria = $this->_getAuditCriteria($auditCriteriaId);
         $auditQuestionItems = $this->_getAuditQuestionItems($auditCriteriaId);
         return view('question-management/mapping-question/create-edit', $this->_params([
             'isEdit' => true,
+            'auditCriteria' => $auditCriteria,
             'auditQuestionItems' => $auditQuestionItems
         ]));
     }
@@ -88,7 +113,10 @@ class MappingQuestionController extends BaseController
         $auditQuestionItemsExistsId = [];
         if (!empty($editQuestions)) {
             foreach($editQuestions as $editQuestion) {
-                $auditQuestionItemsExistsId[] = $editQuestion['id'];
+                if (!empty($editQuestion['question'])) {
+                    $auditQuestionItemsExistsId[] = $editQuestion['id'];
+                }
+
                 $auditQuestionItem->update($editQuestion['id'], [
                     'question' => $editQuestion['question'],
                     'updated_at' => $editQuestion['updated_at']
@@ -96,9 +124,11 @@ class MappingQuestionController extends BaseController
             }
         }
 
-        $auditQuestionItem->where('audit_criteria_id', $auditCriteriaId)
-            ->whereNotIn('id', $auditQuestionItemsExistsId)
-            ->delete();
+        $auditQuestionItem->where('audit_criteria_id', $auditCriteriaId);
+        if (!empty($auditQuestionItemsExistsId)) {
+            $auditQuestionItem->whereNotIn('id', $auditQuestionItemsExistsId);
+        }
+        $auditQuestionItem->delete();
 
         if (!empty($addQuestions)) {
             $auditQuestionItem->insertBatch($addQuestions);

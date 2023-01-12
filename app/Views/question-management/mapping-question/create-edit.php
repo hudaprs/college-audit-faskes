@@ -40,12 +40,12 @@
                     <div class="col-12 col-md-4 pr-2 pr-md-3 border-right">
                         <div class="form-group">
                             <label for="audit-criteria">Audit Criteria</label>
-                            <input type="hidden" class="form-control" value="1" name="audit_criteria_id">
-                            <input type="text" class="form-control" value="Criteria 1" disabled>
+                            <input type="hidden" class="form-control" value="<?= !empty($auditCriteria) ? $auditCriteria->id : '' ?>" name="audit_criteria_id">
+                            <input type="text" class="form-control" value="<?= !empty($auditCriteria) ? $auditCriteria->criteria : '' ?>" disabled>
                         </div>
                         <div class="form-group">
                             <label for="audit-description">Audit Description</label>
-                            <textarea class="form-control" id="audit-description" disabled>Ini adalah kriteria audit untuk....</textarea>
+                            <textarea class="form-control" id="audit-description" disabled><?= !empty($auditCriteria) ? $auditCriteria->description : '' ?></textarea>
                         </div>
                     </div>
                     <div class="col-12 col-md-8 pl-2 pl-md-3">

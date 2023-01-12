@@ -40,20 +40,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Bersih</td>
-                            <td>
-                                <ul class="pl-3">
-                                    <li>Apakah ada tempat sampah?</li>
-                                    <li>Apakah bersih?</li>
-                                </ul>
-                            </td>
-                            <td class="text-center">
-                                <a href="/question-management/mapping-question/1/edit" class="btn btn-secondary">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                            </td>
-                        </tr>
+                        <?php foreach($auditCriterias as $auditCriteria): ?>
+                            <tr>
+                                <td><?= $auditCriteria->criteria ?></td>
+                                <td>
+                                    <?php if(!empty($auditCriteria->question_list)): ?>
+                                        <ul class="pl-3">
+                                            <?php foreach($auditCriteria->question_list as $question): ?>
+                                                <li><?= $question->question ?></li>
+                                            <?php endforeach ?>
+                                        </ul>
+                                    <?php else: ?>
+                                        -
+                                    <?php endif ?>
+                                </td>
+                                <td class="text-center">
+                                    <a href="/question-management/mapping-question/<?= $auditCriteria->id ?>/edit" class="btn btn-secondary">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
                     </tbody>
                 </table>
             </div>
