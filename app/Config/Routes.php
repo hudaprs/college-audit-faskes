@@ -103,6 +103,20 @@ $routes->group('facility-management', function ($routes) {
             $routes->get('(:segment)/delete', 'HealthFacilityController::delete/$1');
         }
     );
+
+    //Mapping Facility
+    $routes->group(
+        'mapping-facility',
+        function ($routes) {
+            $routes->get('/', 'MappingFacilityController::index');
+            $routes->get('create', 'MappingFacilityController::create');
+            $routes->post('store', 'MappingFacilityController::store');
+            $routes->get('(:segment)', 'MappingFacilityController::show/$1');
+            $routes->get('(:segment)/edit', 'MappingFacilityController::edit/$1');
+            $routes->post('(:segment)/update', 'MappingFacilityController::update/$1');
+            $routes->get('(:segment)/delete', 'MappingFacilityController::delete/$1');
+        }
+    );
 });
 // ========== End Facility Management
 
