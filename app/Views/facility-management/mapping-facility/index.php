@@ -29,25 +29,30 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Health Facilities</th>
-                            <th>Facilities</th>
+                            <th>Health Facility</th>
+                            <th>Code</th>
                             <th>Created At</th>
                             <th class="text-center" width="180px">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(sizeof($mappingFacilities)): ?>
-                            <?php foreach($mappingFacilities as $mappingFacility): ?>
-                            <tr>
-                                <td><?= $mappingFacility->name ?></td>
-                                <td><?= $mappingFacility->facility_name ?></td>
-                                <td><?= $mappingFacility->created_at ?></td>
-                                <td class="text-center">
-                                    <a href="<?= base_url("facility-management/mapping-facility/$mappingFacility->health_facility_id/edit") ?>" class="btn btn-secondary">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        <?php if (count($mappingFacilities) > 0): ?>
+                            <?php foreach ($mappingFacilities as $mappingFacility): ?>
+                                <tr>
+                                    <td>
+                                        <?= $mappingFacility->name ?>
+                                    </td>
+                                    <td><?= $mappingFacility->code ?></td>
+                                    <td>
+                                        <?= $mappingFacility->created_at ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="<?= base_url("facility-management/mapping-facility/$mappingFacility->id/edit") ?>"
+                                            class="btn btn-secondary">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                             <?php endforeach ?>
                         <?php else: ?>
                             <tr>

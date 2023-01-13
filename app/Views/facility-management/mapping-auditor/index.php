@@ -37,7 +37,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(sizeof($health_facilities)): ?>
+                        <?php if(count($health_facilities) > 0): ?>
                             <?php foreach($health_facilities as $healthFacility): ?>
                             <tr>
                                 <td><?= $healthFacility->name ?></td>
