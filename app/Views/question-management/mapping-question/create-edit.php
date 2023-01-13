@@ -29,8 +29,7 @@
         </div>
         <form
             action="<?= $isEdit ? base_url('question-management/mapping-question/1/update') : base_url('question-management/mapping-question/store') ?>"
-            method="POST"
-        >
+            method="POST">
             <?= csrf_field() ?>
             <div class="card-body">
                 <!-- Flash Message -->
@@ -40,12 +39,15 @@
                     <div class="col-12 col-md-4 pr-2 pr-md-3 border-right">
                         <div class="form-group">
                             <label for="audit-criteria">Audit Criteria</label>
-                            <input type="hidden" class="form-control" value="<?= !empty($auditCriteria) ? $auditCriteria->id : '' ?>" name="audit_criteria_id">
-                            <input type="text" class="form-control" value="<?= !empty($auditCriteria) ? $auditCriteria->criteria : '' ?>" disabled>
+                            <input type="hidden" class="form-control"
+                                value="<?=!empty($auditCriteria) ? $auditCriteria->id : '' ?>" name="audit_criteria_id">
+                            <input type="text" class="form-control"
+                                value="<?=!empty($auditCriteria) ? $auditCriteria->criteria : '' ?>" disabled>
                         </div>
                         <div class="form-group">
                             <label for="audit-description">Audit Description</label>
-                            <textarea class="form-control" id="audit-description" disabled><?= !empty($auditCriteria) ? $auditCriteria->description : '' ?></textarea>
+                            <textarea class="form-control" id="audit-description"
+                                disabled><?=!empty($auditCriteria) ? $auditCriteria->description : '' ?></textarea>
                         </div>
                     </div>
                     <div class="col-12 col-md-8 pl-2 pl-md-3">
@@ -131,9 +133,9 @@
         })
 
         auditQuestionItems.forEach((auditQuestionItem, idx) => {
-            if(idx != 0) {
+            if (idx != 0) {
                 questionLength++
-                
+
                 renderQuestionList(true, makeQuestion())
             }
 
@@ -158,10 +160,8 @@
                 // Update question label 
                 $(element).find('.question-label').text(`Question ${index + 1}`)
 
-                // Update index
+                // Update remove buton index
                 $(element).find('.remove-question').attr('data-id', index)
-
-                // Update remove button
             })
         })
     })

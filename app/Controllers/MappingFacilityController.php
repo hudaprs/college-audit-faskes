@@ -9,7 +9,7 @@ use App\Models\Facilitie;
 
 class MappingFacilityController extends BaseController
 {
-    private function _params(array $params=[])
+    private function _params(array $params = [])
     {
         return [
             'isEdit' => $params['isEdit'] ?? false,
@@ -19,7 +19,7 @@ class MappingFacilityController extends BaseController
         ];
     }
 
-    private function _validation($isEdit=false, $id=null)
+    private function _validation($isEdit = false, $id = null)
     {
         $validation = [
             'facility_id' => 'required',
@@ -35,7 +35,7 @@ class MappingFacilityController extends BaseController
         $vA = $mappingFacility->where('health_facility_id', $id)->findAll();
         $facilityList = [];
         foreach ($vA as $b) {
-            $facilityList[] = $b->facility_id; 
+            $facilityList[] = $b->facility_id;
         }
         return $facilityList;
     }
@@ -56,24 +56,24 @@ class MappingFacilityController extends BaseController
 
     public function index()
     {
-        $mappingFacility = new MappingFacility();
-        $mappingFacilities = $mappingFacility->select([
-                'health_facility_facilities.id',
-                'health_facility_facilities.health_facility_id',
-                'health_facility_facilities.facility_id',
-                'health_facilities.name',
-                'facilitie.name AS facility_name',
-                'health_facility_facilities.created_at'
-            ])
-            ->join('health_facilities', 'health_facilities.id = health_facility_facilities.health_facility_id', 'LEFT')
-            ->join('facilitie', 'facilitie.id = health_facility_facilities.facility_id', 'LEFT')
-            ->orderBy('health_facility_facilities.created_at', 'DESC')
+        $healthFacility = new HealthFacility();
+        $healthFacilities = $healthFacility->select([
+            'health_facilities.id',
+            'health_facilities.name',
+            'health_facilities.code',
+            'health_facilities.type',
+            'health_facilities.address',
+            'users.name AS created_by',
+            'health_facilities.created_at'
+        ])
+            ->join('users', 'users.id = health_facilities.created_by', 'LEFT')
+            ->orderBy('health_facilities.created_at', 'DESC')
             ->paginate(10);
 
-        $pagination = $mappingFacility->pager;
+        $pagination = $healthFacility->pager;
 
         return view('facility-management/mapping-facility/index', [
-            'mappingFacilities' => $mappingFacilities,
+            'mappingFacilities' => $healthFacilities,
             'pagination' => $pagination
         ]);
     }
@@ -109,7 +109,7 @@ class MappingFacilityController extends BaseController
 
         $addMappingFacilities = [];
         $editMappingFacilities = [];
-        foreach($facilities as $idx => $facility) {
+        foreach ($facilities as $idx => $facility) {
             if (empty($mappingFacilityId[$idx]) || !isset($mappingFacilityId[$idx])) {
                 if (!empty($facility)) {
                     $addMappingFacilities[] = [
@@ -135,7 +135,7 @@ class MappingFacilityController extends BaseController
 
         $mappingFacilitiesExistsId = [];
         if (!empty($editMappingFacilities)) {
-            foreach($editMappingFacilities as $editMappingFacility) {
+            foreach ($editMappingFacilities as $editMappingFacility) {
                 $mappingFacilitiesExistsId[] = $editMappingFacility['id'];
                 $mappingFacility->update($editMappingFacility['id'], [
                     'facility_id' => $editMappingFacility['facility_id'],
@@ -146,7 +146,7 @@ class MappingFacilityController extends BaseController
 
         if (!empty($addMappingFacilities)) {
             $mappingFacility->insertBatch($addMappingFacilities);
-        }        
+        }
 
         // Check for error in transaction
         if (!$db->transStatus()) {
