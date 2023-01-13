@@ -84,6 +84,8 @@ class AuditController extends BaseController
 
 
         $audit = new Audit();
+
+        // Get last audit data
         $lastAudit = $audit->orderBy('created_at', 'desc')->limit(1)->findAll();
 
         // Insert to audit table
@@ -91,7 +93,7 @@ class AuditController extends BaseController
             'health_facility_id' => $this->request->getVar('health_facility'),
             'created_by' => session()->get('id'),
             'status' => AuditHelper::PENDING,
-            'code' => $lastAudit ? $lastAudit->id + 1 : 1 . "/AUDIT/" . date('Ymd'),
+            'code' => count($lastAudit) > 0 ? $lastAudit[0]->id + 1 : 1 . "/AUDIT/" . date('dmy'),
         ]);
 
         // Insert to Audit Items
