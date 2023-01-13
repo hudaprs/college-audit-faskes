@@ -20,11 +20,12 @@ class AuditItemQuestions extends Migration
                 'constraint' => 5,
                 'unsigned' => true
             ],
-            'audit_question_item_id' => [
+            'audit_criteria_id' => [
                 'type' => 'INT',
                 'constraint' => 5,
-                'unsigned' => true
+                'unsigned' => true,
             ],
+            'question' => ['type' => 'TEXT'],
             'observation' => ['type' => 'TEXT'],
             'browse_document' => ['type' => 'TEXT'],
             'field_fact' => ['type' => 'TEXT'],
@@ -35,8 +36,8 @@ class AuditItemQuestions extends Migration
         ]);
 
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('audit_criteria_id', 'audit_criterias', 'id');
         $this->forge->addForeignKey('audit_item_id', 'audit_items', 'id');
-        $this->forge->addForeignKey('audit_question_item_id', 'audit_question_items', 'id');
         $this->forge->createTable('audit_item_questions', true);
     }
 

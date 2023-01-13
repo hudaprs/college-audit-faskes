@@ -11,7 +11,9 @@ class AuditItemQuestion extends Model
     protected $useAutoIncrement = true;
     protected $allowedFields = [
         'audit_item_id',
-        'audit_question_item_id',
+        'audit_criteria_id',
+        'question',
+        'observation',
         'browse_document',
         'field_fact',
         'findings',

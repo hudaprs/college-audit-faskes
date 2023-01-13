@@ -2,10 +2,15 @@
 
 namespace App\Controllers;
 
+use App\Database\Migrations\AuditCriteria;
 use App\Helpers\AuditHelper;
 use App\Models\Audit;
+use App\Models\AuditQuestionItem;
+use App\Models\Facilitie;
 use App\Models\HealthFacility;
+use App\Models\MappingFacility;
 use App\Models\User;
+use App\Models\AuditCriterias;
 use App\Models\AuditItem;
 use App\Models\AuditItemQuestion;
 
@@ -19,6 +24,10 @@ class AuditController extends BaseController
             'statusList' => AuditHelper::STATUS_LIST,
             'audit' => $params['audit'] ?? null,
             'healthFacilityList' => $params['healthFacilityList'] ?? [],
+            'auditCriteriaList' => $params['auditCriteriaList'] ?? [],
+            'facilityDetail' => $params['facilityDetail'] ?? null,
+            'questionDetail' => $params['questionDetail'] ?? [],
+            'questions' => $params['questions'] ?? [],
         ];
     }
 
@@ -65,9 +74,43 @@ class AuditController extends BaseController
     public function create()
     {
         $healthFacility = new HealthFacility();
-        $healthFacilityList = $healthFacility->select(['id', 'name', 'code'])->findAll();
+        $mappingFacility = new MappingFacility();
+        $auditCriteria = new AuditCriterias();
+
+        $healthFacilityList = $healthFacility
+            ->select([
+                'health_facilities.id',
+                'health_facilities.name',
+                'health_facilities.code'
+            ])
+            ->join('health_facility_facilities', 'health_facilities.id = health_facility_facilities.health_facility_id')
+            ->groupBy('health_facilities.id')
+            ->findAll();
+        $auditCriteriaList = $auditCriteria->findAll();
+
+
+        // Check if request is ajax
+        if ($this->request->isAJAX()) {
+            $mappingFacilityList = $mappingFacility->select([
+                'health_facility_facilities.id',
+                'health_facility_facilities.facility_id',
+                'health_facility_facilities.health_facility_id',
+                'facilitie.name as facility_name',
+                'health_facilities.name as health_facility_name'
+            ])
+                ->join('facilitie', 'facilitie.id = health_facility_facilities.facility_id')
+                ->join('health_facilities', 'health_facilities.id = health_facility_facilities.health_facility_id')
+                ->where('health_facility_id', $this->request->getGet('health_facility_id'))
+                ->findAll();
+
+            return $this->response->setJSON([
+                'facilityList' => $mappingFacilityList,
+            ]);
+        }
+
         return view('audit/create_edit', $this->_params([
-            'healthFacilityList' => $healthFacilityList
+            'healthFacilityList' => $healthFacilityList,
+            'auditCriteriaList' => $auditCriteriaList,
         ]));
     }
 
@@ -84,6 +127,9 @@ class AuditController extends BaseController
 
 
         $audit = new Audit();
+        $auditItem = new AuditItem();
+        $auditQuestionItem = new AuditQuestionItem();
+        $auditItemQuestion = new AuditItemQuestion();
 
         // Get last audit data
         $lastAudit = $audit->orderBy('created_at', 'desc')->limit(1)->findAll();
@@ -93,13 +139,62 @@ class AuditController extends BaseController
             'health_facility_id' => $this->request->getVar('health_facility'),
             'created_by' => session()->get('id'),
             'status' => AuditHelper::PENDING,
-            'code' => count($lastAudit) > 0 ? $lastAudit[0]->id + 1 : 1 . "/AUDIT/" . date('dmy'),
+            'code' => (count($lastAudit) > 0 ? $lastAudit[0]->id + 1 : 1) . "/AUDIT/" . date('dmy'),
         ]);
 
         // Insert to Audit Items
+        $_facilityList = [];
+        $_criteriaList = [];
 
-        // Insert to Audit Item Question
+        foreach ($this->request->getVar('facility[]') as $facility) {
+            if ($facility !== '') {
+                $_facilityList[] = $facility;
+            }
+        }
 
+        foreach ($this->request->getVar('criteria[]') as $criteria) {
+            if ($criteria !== '') {
+                $_criteriaList[] = $criteria;
+            }
+        }
+
+        $mapAuditItems = array_map(function ($item) use ($audit) {
+            return [
+                'audit_id' => $audit->getInsertID(),
+                'facility_id' => explode("-", $item)[0],
+                'audit_criteria_id' => explode("-", $item)[1],
+            ];
+        }, $_criteriaList);
+
+        $insertedAuditItems = [];
+        foreach ($mapAuditItems as $mapAuditItem) {
+            $auditItem->insert($mapAuditItem);
+
+            $insertedAuditItems[] = [
+                'audit_item_id' => $auditItem->getInsertID(),
+                'audit_criteria_id' => $mapAuditItem['audit_criteria_id']
+            ];
+        }
+
+        $auditItemQuestionsReal = [];
+        foreach ($insertedAuditItems as $auditItem) {
+            $auditQuestionList = $auditQuestionItem->where('audit_criteria_id', $auditItem['audit_criteria_id'])->findAll();
+
+            foreach ($auditQuestionList as $question) {
+                $auditItemQuestionsReal[] = [
+                    'audit_item_id' => $auditItem['audit_item_id'],
+                    'audit_criteria_id' => $question->audit_criteria_id,
+                    'question' => $question->question,
+                    'observation' => '',
+                    'browse_document' => '',
+                    'field_fact' => '',
+                    'findings' => '',
+                    'recommendation' => '',
+                ];
+            }
+        }
+
+        $auditItemQuestion->insertBatch($auditItemQuestionsReal);
 
         // Check for error in transaction
         if (!$db->transStatus()) {
@@ -110,24 +205,58 @@ class AuditController extends BaseController
 
         $db->transCommit();
         session()->setFlashdata('success', 'Audit created successfully');
-        return redirect()->to(base_url('audits/index'));
-    }
-
-    public function show($id)
-    {
-        $user = $this->_getUser($id);
-        return view('master/users/create_edit', $this->_params([
-            'isDetail' => true,
-            'user' => $user
-        ]));
+        return redirect()->to(base_url('audits'));
     }
 
     public function edit($id)
     {
-        $user = $this->_getUser($id);
-        return view('master/users/create_edit', $this->_params([
+        $audit = $this->_getAudit($id);
+        $healthFacility = new HealthFacility();
+        $healthFacilityList = $healthFacility
+            ->select([
+                'health_facilities.id',
+                'health_facilities.name',
+                'health_facilities.code'
+            ])
+            ->join('health_facility_facilities', 'health_facilities.id = health_facility_facilities.health_facility_id')
+            ->groupBy('health_facilities.id')
+            ->findAll();
+        $facility = new Facilitie;
+        $facilityDetail = $facility
+            ->select([
+                'facilitie.id',
+                'facilitie.name',
+            ])
+            ->join('audit_items', 'facilitie.id = audit_items.facility_id')
+            ->where('audit_items.audit_id', $id)
+            ->groupBy('facilitie.id')
+            ->findAll();
+        $auditCriteria = new AuditCriterias();
+        $auditCriteriaList = $auditCriteria
+            ->join('audit_items', 'audit_items.audit_criteria_id = audit_criterias.id')
+            ->where('audit_items.audit_id', $id)
+            ->findAll();
+        $question = new AuditItemQuestion();
+        $questionDetail = $question->select([
+            'audit_item_questions.id',
+            'audit_item_questions.audit_item_id',
+            'audit_item_questions.question',
+            'audit_item_questions.observation',
+            'audit_item_questions.browse_document',
+            'audit_item_questions.field_fact',
+            'audit_item_questions.findings',
+            'audit_item_questions.recommendation',
+        ])
+            ->join('audit_items', 'audit_item_questions.audit_item_id = audit_items.id', 'right')
+            ->where('audit_items.audit_id', $id)
+            ->findAll();
+        return view('audit/create_edit', $this->_params([
             'isEdit' => true,
-            'user' => $user
+            'audit' => $audit,
+            'healthFacilityList' => $healthFacilityList,
+            'facilityDetail' => $facilityDetail,
+            'auditCriteriaList' => $auditCriteriaList,
+            'questionDetail' => $questionDetail,
         ]));
     }
 
@@ -136,18 +265,18 @@ class AuditController extends BaseController
         $db = db_connect();
         $db->transBegin();
 
-        $validation = $this->_validation(true, $id);
-        if (!$validation) {
-            session()->setFlashdata('error', $this->validator->listErrors());
-            return redirect()->back()->withInput();
-        }
-
-        $user = new User;
-        $user->update($id, [
-            'name' => $this->request->getVar('name'),
-            'email' => $this->_inputtedEmail(),
-            'role' => $this->request->getVar('role'),
-        ]);
+        $singleAudit = $this->_getAudit($id);
+        $audit = new Audit;
+        $status = $singleAudit->status === AuditHelper::PENDING
+            ? AuditHelper::ON_PROGRESS
+            : (
+                $singleAudit->status === AuditHelper::ON_PROGRESS
+                ? AuditHelper::DONE
+                : AuditHelper::PENDING
+            );
+        $audit->where('id', $id);
+        $audit->set('status', $status);
+        $audit->update();
 
         // Check for error in transaction
         if (!$db->transStatus()) {
@@ -157,8 +286,65 @@ class AuditController extends BaseController
         }
 
         $db->transCommit();
-        session()->setFlashdata('success', 'User updated successfully');
-        return redirect()->to(base_url('master/users'));
+        session()->setFlashdata('success', 'Audit updated successfully');
+        return redirect()->back();
+    }
+
+    public function updateAuditFields($id)
+    {
+        $db = db_connect();
+        $db->transBegin();
+
+        $auditItemQuestion = new AuditItemQuestion;
+        $auditItemQuestion->where('id', $id);
+
+
+        // Check for observation
+        if ($this->request->getVar('observation')) {
+            $auditItemQuestion->set('observation', $this->request->getVar('observation'));
+            $auditItemQuestion->update();
+
+        }
+
+        // Check for browse document
+        if ($this->request->getVar('browse_document')) {
+            $auditItemQuestion->set('browse_document', $this->request->getVar('browse_document'));
+            $auditItemQuestion->update();
+
+        }
+
+        // Check for field fact
+        if ($this->request->getVar('field_fact')) {
+            $auditItemQuestion->set('field_fact', $this->request->getVar('field_fact'));
+            $auditItemQuestion->update();
+
+        }
+
+        // Check for findings
+        if ($this->request->getVar('findings')) {
+            $auditItemQuestion->set('findings', $this->request->getVar('findings'));
+            $auditItemQuestion->update();
+
+        }
+
+
+        // Check for recommendation
+        if ($this->request->getVar('recommendation')) {
+            $auditItemQuestion->set('recommendation', $this->request->getVar('recommendation'));
+            $auditItemQuestion->update();
+        }
+
+
+        // Check for error in transaction
+        if (!$db->transStatus()) {
+            $db->transRollback();
+            return $this->response->setJSON(['message' => 'Something went wrong when start to update user']);
+        }
+
+
+        $db->transCommit();
+
+        return $this->response->setJSON(['message' => 'Audit fields updated', 'token' => csrf_hash()]);
     }
 
     public function delete($id)

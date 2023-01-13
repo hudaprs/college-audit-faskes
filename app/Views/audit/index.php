@@ -47,12 +47,12 @@
                         <?php if(count($audits) > 0): ?>
                             <?php foreach ($audits as $audit): ?>
                                 <tr>
-                                    <td><?= $audit['name'] ?></td>
-                                    <td><?= $audit['code'] ?></td>
-                                    <td><?= $audit['status'] ?></td>
-                                    <td><?= $audit['created_by'] ?></td>
-                                    <td><?= $audit['created_at'] ?></td>
-                                    <td><?= $audit['updated_at'] ?></td>
+                                    <td><?= $audit->name ?></td>
+                                    <td><?= $audit->code ?></td>
+                                    <td><?= $audit->status ?></td>
+                                    <td><?= $audit->created_by ?></td>
+                                    <td><?= $audit->created_at ?></td>
+                                    <td><?= $audit->updated_at ?></td>
                                     <td>
                                     <a href="<?= base_url("audits/$audit->id/edit") ?>" class="btn btn-secondary">
                                         <em class="fa fa-edit"></em>

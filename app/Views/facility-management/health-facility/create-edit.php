@@ -35,7 +35,7 @@
             <?= view_cell('\App\Libraries\Widget::flashMessage') ?>
 
             <form
-                action="<?= $isEdit ? base_url('facility-management/health-facility/'.$healthFacility->id.'/update') : base_url('facility-management/health-facility/store') ?>"
+                action="<?= $isEdit ? base_url('facility-management/health-facility/' . $healthFacility->id . '/update') : base_url('facility-management/health-facility/store') ?>"
                 method="POST">
                 <?= csrf_field() ?>
 
@@ -43,16 +43,18 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" name="name" id="name" placeholder="Enter name"
-                        value="<?= old('name') ? old('name') : (isset($healthFacility) ? $healthFacility->name : null) ?>" <?= $isDetail ? 'disabled' : '' ?>>
+                        value="<?= old('name') ? old('name') : (isset($healthFacility) ? $healthFacility->name : null) ?>"
+                        <?= $isDetail ? 'disabled' : '' ?>>
                 </div>
 
-                <?php if($isDetail): ?>
-                <!-- Code -->
-                <div class="form-group">
-                    <label for="code">Code</label>
-                    <input type="text" class="form-control" name="code" id="code" placeholder="Enter code"
-                        value="<?= old('code') ? old('code') : (isset($healthFacility) ? $healthFacility->code : null) ?>" <?= $isDetail ? 'disabled' : '' ?>>
-                </div>
+                <?php if ($isDetail): ?>
+                    <!-- Code -->
+                    <div class="form-group">
+                        <label for="code">Code</label>
+                        <input type="text" class="form-control" name="code" id="code" placeholder="Enter code"
+                            value="<?= old('code') ? old('code') : (isset($healthFacility) ? $healthFacility->code : null) ?>"
+                            <?= $isDetail ? 'disabled' : '' ?>>
+                    </div>
                 <?php endif ?>
 
                 <!-- Type -->
@@ -63,7 +65,7 @@
                             <option value="<?= $healthFacilityType ?>" <?=(old('type') ? old('type') : (isset($healthFacility) ? $healthFacility->type : null)) === $healthFacilityType ? 'selected' : '' ?>>
                                 <?= $healthFacilityType ?>
                             </option>
-                            <?php endforeach ?>
+                        <?php endforeach ?>
                     </select>
                 </div>
 
@@ -82,5 +84,6 @@
         </div>
     </div>
 </section>
+
 
 <?= $this->endSection() ?>

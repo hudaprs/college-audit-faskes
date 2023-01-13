@@ -172,7 +172,8 @@ $routes->group(
         $routes->get('create', 'AuditController::create');
         $routes->post('store', 'AuditController::store');
         $routes->get('(:segment)/edit', 'AuditController::edit/$1');
-        $routes->post('(:segment)/update', 'AuditCriteriasController::update/$1');
+        $routes->post('(:segment)/update', 'AuditController::update/$1');
+        $routes->post('(:segment)/update-audit-fields', 'AuditController::updateAuditFields/$1');
     }
 );
 // ========== End Audit
