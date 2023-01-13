@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Facility Management</h1>
+                <h1>Mapping Health Facility Auditor</h1>
             </div>
         </div>
     </div>
@@ -19,14 +19,9 @@
     <?= view_cell('\App\Libraries\Widget::flashMessage') ?>
 
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header">
             <div class="w-100">
-                <h3 class="card-title">Health Facility List</h3>
-            </div>
-            <div class="d-flex justify-content-end align-items-center w-100">
-                <a href="<?= base_url('facility-management/health-facility/create') ?>" class="btn btn-primary">
-                    Create Health Facility
-                </a>
+                <h3 class="card-title">Mapping Auditor List</h3>
             </div>
         </div>
         <div class="card-body">
@@ -34,12 +29,10 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>Health Facility</th>
                             <th>Code</th>
-                            <th>Type</th>
-                            <th>Address</th>
-                            <th width="100px">Created By</th>
                             <th>Created At</th>
+                            <!-- <th>Updated At</th> -->
                             <th class="text-center" width="180px">Action</th>
                         </tr>
                     </thead>
@@ -49,19 +42,10 @@
                             <tr>
                                 <td><?= $healthFacility->name ?></td>
                                 <td><?= $healthFacility->code ?></td>
-                                <td><?= $healthFacility->type ?></td>
-                                <td><?= $healthFacility->address ?></td>
-                                <td><?= $healthFacility->created_by ?></td>
                                 <td><?= $healthFacility->created_at ?></td>
                                 <td class="text-center">
-                                    <a href="<?= base_url("facility-management/health-facility/$healthFacility->id") ?>" class="btn btn-success">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a href="<?= base_url("facility-management/health-facility/$healthFacility->id/edit") ?>" class="btn btn-secondary">
+                                    <a href="<?= base_url("facility-management/mapping-auditor/$healthFacility->id/edit") ?>" class="btn btn-secondary">
                                         <i class="fa fa-edit"></i>
-                                    </a>
-                                    <a href="<?= base_url("facility-management/health-facility/$healthFacility->id/delete") ?>" class="btn btn-danger">
-                                        <i class="fa fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>

@@ -64,6 +64,35 @@
                             <p>Health Facility</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('facility-management/mapping-auditor') ?>" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Mapping Auditor</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fa fa-question-circle"></i>
+                    <p>
+                        Question Management
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="<?= base_url('question-management/audit-criterias') ?>" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Audit Criteria</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('question-management/mapping-question') ?>" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Mapping Question</p>
+                        </a>
+                    </li>
                 </ul>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
