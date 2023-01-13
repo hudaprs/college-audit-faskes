@@ -63,6 +63,14 @@
                                 <p>Health Facility</p>
                             </a>
                         </li>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="<?= base_url('facility-management/mapping-facility') ?>" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Mapping Facility</p>
+                                </a>
+                            </li>
+                        </ul>
                         <li class="nav-item">
                             <a href="<?= base_url('facility-management/mapping-auditor') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
