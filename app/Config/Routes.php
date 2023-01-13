@@ -86,7 +86,7 @@ $routes->group('master', function ($routes) {
         }
     );
 
-    
+
 });
 // ========== End Master
 
@@ -127,7 +127,8 @@ $routes->group('question-management', function ($routes) {
             $routes->get('/', 'MappingQuestionController::index');
             $routes->get('(:segment)/edit', 'MappingQuestionController::edit/$1');
             $routes->post('(:segment)/update', 'MappingQuestionController::update/$1');
-        });
+        }
+    );
 });
 // ========== End Question Management
 
