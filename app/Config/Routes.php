@@ -38,7 +38,6 @@ $routes->set404Override();
 $routes->get('/', 'DashboardController::index');
 // ========== End Dashboard Section
 
-
 // ========== Tests Section
 $routes->group('tests', function ($routes) {
     $routes->get('mapping-facility', 'TestController::mappingFacility');
@@ -55,7 +54,6 @@ $routes->group('auth', function ($routes) {
     $routes->get('logout', 'AuthController::logout');
 });
 // ========== End Route Section
-
 
 // ========== Master
 $routes->group('master', function ($routes) {
@@ -85,8 +83,6 @@ $routes->group('master', function ($routes) {
             $routes->get('(:segment)/delete', 'FacilitieController::delete/$1');
         }
     );
-
-
 });
 // ========== End Master
 
@@ -174,10 +170,10 @@ $routes->group(
         $routes->get('(:segment)/edit', 'AuditController::edit/$1');
         $routes->post('(:segment)/update', 'AuditController::update/$1');
         $routes->post('(:segment)/update-audit-fields', 'AuditController::updateAuditFields/$1');
+        $routes->get('(:segment)/export/pdf', 'AuditController::exportPDF/$1');
     }
 );
 // ========== End Audit
-
 
 /*
  * --------------------------------------------------------------------

@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use TCPDF;
+use Dompdf\Dompdf;
 use App\Database\Migrations\AuditCriteria;
 use App\Helpers\AuditHelper;
 use App\Models\Audit;
@@ -9,6 +11,7 @@ use App\Models\AuditQuestionItem;
 use App\Models\Facilitie;
 use App\Models\HealthFacility;
 use App\Models\MappingFacility;
+use App\Models\MappingAuditor;
 use App\Models\User;
 use App\Models\AuditCriterias;
 use App\Models\AuditItem;
@@ -365,5 +368,100 @@ class AuditController extends BaseController
         $db->transCommit();
         session()->setFlashdata('success', 'User deleted successfully');
         return redirect()->to(base_url('master/users'));
+    }
+
+    public function exportPDF($id)
+    {
+        $audit = $this->_getAudit($id);
+
+        $healthFacility = new HealthFacility();
+        $fetchHealthFacility = $healthFacility->where('id', $audit->health_facility_id)->first();
+
+        $mappingAuditor = new MappingAuditor();
+        $fetchAuditor = $mappingAuditor
+            ->select('users.name')
+            ->join('users', 'users.id = mapping_auditor.user_id')
+            ->where('mapping_auditor.health_facility_id', $audit->health_facility_id)
+            ->findAll();
+
+        $auditors = [];
+        foreach($fetchAuditor as $auditor) {
+            $auditors[] = $auditor->name;
+        }
+
+        $auditItem = new AuditItem();
+        $fetchAuditItem = $auditItem
+            ->select([
+                'audit_items.id AS audit_items_id',
+                'facilitie.id AS facilitiy_id',
+                'audit_item_questions.audit_criteria_id AS audit_criteria_id',
+                'facilitie.name AS facility_name',
+                'audit_criterias.criteria AS audit_criteria_name',
+                'audit_item_questions.question',
+                'audit_item_questions.observation',
+                'audit_item_questions.browse_document',
+                'audit_item_questions.field_fact',
+                'audit_item_questions.findings',
+                'audit_item_questions.recommendation'
+            ])
+            ->join('audit_item_questions', 'audit_item_questions.audit_item_id = audit_items.id')
+            ->join('facilitie', 'facilitie.id = audit_items.facility_id')
+            ->join('audit_criterias', 'audit_criterias.id = audit_item_questions.audit_criteria_id')
+            ->where('audit_items.audit_id', $id)
+            ->findAll();
+
+        $auditQuestions = [];
+        foreach($fetchAuditItem as $auditItemQuestion) {
+            $facilityId = $auditItemQuestion->facilitiy_id;
+            $critediaId = $auditItemQuestion->audit_criteria_id;
+
+            if(!isset($auditQuestions[$facilityId])) {
+                $auditQuestions[$facilityId] = [
+                    'facility_name' => $auditItemQuestion->facility_name,
+                    'qustion_total' => 0,
+                    'criterias' => []
+                ];
+            }
+
+            if(!isset($auditQuestions[$facilityId]['criterias'][$critediaId])) {
+                $auditQuestions[$facilityId]['criterias'][$critediaId] = [
+                    'criteria' => $auditItemQuestion->audit_criteria_name,
+                    'questions' => []
+                ];
+            }
+
+            $auditQuestions[$facilityId]['criterias'][$critediaId]['questions'][] = [
+                'question' => $auditItemQuestion->question,
+                'observation' => $auditItemQuestion->observation,
+                'browse_document' => $auditItemQuestion->browse_document,
+                'field_fact' => $auditItemQuestion->field_fact,
+                'findings' => $auditItemQuestion->findings,
+                'recommendation' => $auditItemQuestion->recommendation
+            ];
+
+            $auditQuestions[$facilityId]['qustion_total'] += 1;
+        }
+
+        $filename = 'Audit Faskes '.date('d-m-Y');
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+
+        // load HTML content
+        $dompdf->loadHtml(view('audit/export/pdf', [
+            'audit' => $audit,
+            'healthFacility' => $fetchHealthFacility,
+            'auditors' => $auditors,
+            'auditQuestions' => $auditQuestions
+        ]));
+
+        // (optional) setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // render html as PDF
+        $dompdf->render();
+
+        // output the generated pdf
+        $dompdf->stream($filename);
     }
 }
