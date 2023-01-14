@@ -6,7 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^7.4 || ^8.0",
-        "codeigniter4/framework": "^4.0"
+        "codeigniter4/framework": "^4.0",
+        "tecnickcom/tcpdf": "^6.6",
+        "dompdf/dompdf": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",

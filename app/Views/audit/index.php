@@ -53,10 +53,13 @@
                                     <td><?= $audit->created_by ?></td>
                                     <td><?= $audit->created_at ?></td>
                                     <td><?= $audit->updated_at ?></td>
-                                    <td>
-                                    <a href="<?= base_url("audits/$audit->id/edit") ?>" class="btn btn-secondary">
-                                        <em class="fa fa-edit"></em>
-                                    </a>
+                                    <td class="text-center">
+                                        <a href="<?= base_url("audits/$audit->id/export/pdf") ?>" target="_blank" class="btn btn-warning">
+                                            <i class="fas fa-file-pdf fa-fw"></i>
+                                        </a>
+                                        <a href="<?= base_url("audits/$audit->id/edit") ?>" class="btn btn-secondary">
+                                            <i class="fa fa-edit fa-fw"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach;  ?>
