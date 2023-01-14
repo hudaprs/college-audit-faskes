@@ -21,7 +21,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div class="w-100">
-                <h3 class="card-title">User List</h3>
+                <h3 class="card-title">Audit List</h3>
             </div>
             <div class="d-flex justify-content-end align-items-center w-100">
                 <a href="<?= base_url('audits/create') ?>" class="btn btn-primary">

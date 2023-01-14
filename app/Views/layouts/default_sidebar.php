@@ -103,7 +103,7 @@
                 </li>
             <?php endif ?>
 
-            <?php if (App\Helpers\RoleHelper::isAdmin()): ?>
+            <?php if (App\Helpers\RoleHelper::isAuditor()): ?>
                 <li class="nav-item">
                     <a href="<?= base_url('audits') ?>" class="nav-link">
                         <i class="nav-icon fa fa-book"></i>
